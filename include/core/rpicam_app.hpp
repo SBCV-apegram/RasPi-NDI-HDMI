@@ -95,7 +95,8 @@ public:
 			std::string fmt = format.toString();
 			unsigned int mode_depth = fmt.find("8") != std::string::npos ? 8 :
 									  fmt.find("10") != std::string::npos ? 10 :
-									  fmt.find("12") != std::string::npos ? 12 : 16;
+									  fmt.find("12") != std::string::npos ? 12 :
+									  fmt.find("14") != std::string::npos ? 14 : 16;
 			return mode_depth;
 		}
 		libcamera::Size size;
@@ -111,12 +112,14 @@ public:
 
 	// Some flags that can be used to give hints to the camera configuration.
 	static constexpr unsigned int FLAG_STILL_NONE = 0;
-	static constexpr unsigned int FLAG_STILL_BGR = 1; // supply BGR images, not YUV
-	static constexpr unsigned int FLAG_STILL_RGB = 2; // supply RGB images, not YUV
-	static constexpr unsigned int FLAG_STILL_RAW = 4; // request raw image stream
-	static constexpr unsigned int FLAG_STILL_DOUBLE_BUFFER = 8; // double-buffer stream
-	static constexpr unsigned int FLAG_STILL_TRIPLE_BUFFER = 16; // triple-buffer stream
-	static constexpr unsigned int FLAG_STILL_BUFFER_MASK = 24; // mask for buffer flags
+	static constexpr unsigned int FLAG_STILL_BGR = 1; // supply BGR 24bpp images, not YUV
+	static constexpr unsigned int FLAG_STILL_BGR48 = 2; // supply BGR 48bpp images, not YUV
+	static constexpr unsigned int FLAG_STILL_RGB = 4; // supply RGB images, not YUV
+	static constexpr unsigned int FLAG_STILL_RGB48 = 8; // supply RGB 48bpp images, not YUV
+	static constexpr unsigned int FLAG_STILL_RAW = 16; // request raw image stream
+	static constexpr unsigned int FLAG_STILL_DOUBLE_BUFFER = 32; // double-buffer stream
+	static constexpr unsigned int FLAG_STILL_TRIPLE_BUFFER = 64; // triple-buffer stream
+	static constexpr unsigned int FLAG_STILL_BUFFER_MASK = 96; // mask for buffer flags
 
 	static constexpr unsigned int FLAG_VIDEO_NONE = 0;
 	static constexpr unsigned int FLAG_VIDEO_RAW = 1; // request raw image stream
@@ -152,7 +155,7 @@ public:
 	Stream *LoresStream(StreamInfo *info = nullptr) const;
 	Stream *GetMainStream() const;
 
-	const CameraManager *GetCameraManager() const;
+	const CameraManager *GetCameraManager();
 	std::vector<std::shared_ptr<libcamera::Camera>> GetCameras()
 	{
 		return GetCameras(camera_manager_.get());
@@ -162,6 +165,10 @@ public:
 
 	void SetControls(const ControlList &controls);
 	StreamInfo GetStreamInfo(Stream const *stream) const;
+	const ControlList &GetProperties() const
+	{
+		return camera_->properties();
+	}
 
 	static unsigned int verbosity;
 	static unsigned int GetVerbosity() { return verbosity; }
@@ -179,7 +186,8 @@ public:
 
 	friend class BufferWriteSync;
 	friend class BufferReadSync;
-	friend struct Options;
+	friend class PostProcessor;
+	friend struct OptsInternal;
 
 protected:
 	std::unique_ptr<Options> options_;
@@ -243,7 +251,6 @@ private:
 	Mode selectMode(const Mode &mode) const;
 
 	std::unique_ptr<CameraManager> camera_manager_;
-	std::vector<std::shared_ptr<libcamera::Camera>> cameras_;
 	std::shared_ptr<Camera> camera_;
 	bool camera_acquired_ = false;
 	std::unique_ptr<CameraConfiguration> configuration_;
@@ -276,4 +283,5 @@ private:
 	uint64_t last_timestamp_;
 	uint64_t sequence_ = 0;
 	PostProcessor post_processor_;
+	libcamera::PixelFormat lores_format_ = libcamera::formats::YUV420;
 };

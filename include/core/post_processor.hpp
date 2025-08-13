@@ -14,6 +14,7 @@
 #include <queue>
 
 #include "core/completed_request.hpp"
+#include "core/dl_lib.hpp"
 #include "core/logging.hpp"
 
 namespace libcamera
@@ -36,6 +37,8 @@ public:
 
 	~PostProcessor();
 
+	void LoadModules(const std::string &lib_dir);
+
 	void Read(std::string const &filename);
 
 	void SetCallback(PostProcessorCallback callback);
@@ -57,6 +60,7 @@ private:
 
 	RPiCamApp *app_;
 	std::vector<StagePtr> stages_;
+	std::vector<DlLib> dynamic_stages_;
 	void outputThread();
 
 	std::queue<CompletedRequestPtr> requests_;
