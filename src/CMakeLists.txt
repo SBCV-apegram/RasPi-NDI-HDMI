@@ -19,7 +19,7 @@ target_link_libraries(raspindi PRIVATE
 #    encoders
 #    outputs
     ndioutput
-    rpicam_app
+    camera_app
     boost_program_options
 )
 
