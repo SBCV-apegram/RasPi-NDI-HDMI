@@ -18,10 +18,10 @@ NdiOutput::NdiOutput(VideoOptions const *options, std::string neopixelPath)
         exit(1);
 	}
     // std::cout << "Width: " << options->width << " x Height: " << options->height << std::endl;
-    this->NDI_video_frame.xres = options->width;
-    this->NDI_video_frame.yres = options->height;
+    this->NDI_video_frame.xres = options->Get().width;
+    this->NDI_video_frame.yres = options->Get().height;
     this->NDI_video_frame.FourCC = NDIlib_FourCC_type_I420;
-    this->NDI_video_frame.line_stride_in_bytes = options->width;
+    this->NDI_video_frame.line_stride_in_bytes = options->Get().width;
 
     this->neopixelpath = neopixelPath;
 }
