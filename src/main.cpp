@@ -125,7 +125,7 @@ void mirrored_rotation(VideoOptions *options)
 	if (!ok)
 		throw std::runtime_error("illegal rotation value");
 	transform = rotation * transform;
-	options->Get().transform = transform;
+	options->Set().transform = transform;
 }
 
 static void event_loop(RPiCamEncoder &app)
@@ -159,23 +159,23 @@ int main(int argc, char *argv[])
 		RPiCamEncoder app;
 		VideoOptions *options = app.GetOptions();
 		loadConfig();
-		options->Get().codec = "YUV420";
-		options->Get().verbose = false;
-		options->Get().nopreview = true;
-		options->Get().denoise = "off";
+		options->Set().codec = "YUV420";
+		options->Set().verbose = false;
+		options->Set().nopreview = true;
+		options->Set().denoise = "off";
 		// Set flip
-		options->Get().width = _getValue("width", 1280);
-		options->Get().height = _getValue("height", 720);
-		options->Get().framerate = _getValue("framerate", 25);
-		options->Get().awb = _getValue("awb", "auto");
-		options->Get().awb_gain_b = _getValue("b_gain", 0.0f);
-		options->Get().awb_gain_r = _getValue("r_gain", 0.0f);
-		options->Get().saturation = _getValue("saturation", 1);
-		options->Get().sharpness = _getValue("sharpness", 1);
-		options->Get().contrast = _getValue("contrast", 1);
-		options->Get().brightness = ((_getValue("brightness", 50) / 50) - 1);
-		options->Get().exposure = _getValue("exposuremode", "auto");
-		options->Get().metering = _getValue("meteringmode", "average");
+		options->Set().width = _getValue("width", 1280);
+		options->Set().height = _getValue("height", 720);
+		options->Set().framerate = _getValue("framerate", 25);
+		options->Set().awb = _getValue("awb", "auto");
+		options->Set().awb_gain_b = _getValue("b_gain", 0.0f);
+		options->Set().awb_gain_r = _getValue("r_gain", 0.0f);
+		options->Set().saturation = _getValue("saturation", 1);
+		options->Set().sharpness = _getValue("sharpness", 1);
+		options->Set().contrast = _getValue("contrast", 1);
+		options->Set().brightness = ((_getValue("brightness", 50) / 50) - 1);
+		options->Set().exposure = _getValue("exposuremode", "auto");
+		options->Set().metering = _getValue("meteringmode", "average");
 		mirrored_rotation(options);
 		options->Print();
 		event_loop(app);
