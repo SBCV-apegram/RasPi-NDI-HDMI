@@ -13,7 +13,7 @@
 
 #include "core/video_options.hpp"
 
-struct VideoOptions : public Options
+struct NDIOptions : public VideoOptions
 {
 	NDIOptions() : VideoOptions()
 	{
@@ -27,6 +27,8 @@ struct VideoOptions : public Options
 		;
 		// clang-format on
 	}
+
+	std::string neopixel_path;
 
 	virtual bool Parse(int argc, char *argv[]) override
 	{
