@@ -22,6 +22,11 @@ NdiOutput::NdiOutput(VideoOptions const *options, std::string neopixelPath)
     this->NDI_video_frame.yres = options->Get().height;
     this->NDI_video_frame.FourCC = NDIlib_FourCC_type_I420;
     this->NDI_video_frame.line_stride_in_bytes = options->Get().width;
+    this->NDI_video_frame.frame_format_type = NDIlib_frame_format_type_progressive;
+    this->NDI_video_frame.picture_aspect_ratio = 16.0f/9.0f;
+    this->NDI_video_frame.frame_rate_N = 30000;
+    this->NDI_video_frame.frame_rate_D = 1001;
+
 
     this->neopixelpath = neopixelPath;
 }
