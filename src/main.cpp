@@ -286,7 +286,7 @@ int main(int argc, char *argv[])
 		options->Set().exposure = _getValue("exposuremode", "auto");
 		options->Set().metering = _getValue("meteringmode", "average");
 		mirrored_rotation(options);
-		options->Print();
+	//	options->Print();
 		event_loop(app);
 	}
 	catch (std::exception const &e)
