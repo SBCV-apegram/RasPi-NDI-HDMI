@@ -175,8 +175,8 @@ static int get_colourspace_flags(std::string const &codec)
 static void event_loop(RPiCamEncoder &app)
 {
 	VideoOptions const *options = app.GetOptions();
-	//std::unique_ptr<Output> output = std::unique_ptr<Output>(Output::Create(options));
-	std::unique_ptr<Output> output = std::unique_ptr<Output>(new NdiOutput(options, _getValue("neopixel_path", "/tmp/neopixel.state")));
+	std::unique_ptr<Output> output = std::unique_ptr<Output>(Output::Create(options));
+//	std::unique_ptr<Output> output = std::unique_ptr<Output>(new NdiOutput(options, _getValue("neopixel_path", "/tmp/neopixel.state")));
 	app.SetEncodeOutputReadyCallback(std::bind(&Output::OutputReady, output.get(), _1, _2, _3, _4));
 	app.SetMetadataReadyCallback(std::bind(&Output::MetadataReady, output.get(), _1));
 
