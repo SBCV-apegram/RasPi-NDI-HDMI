@@ -39,7 +39,7 @@ static void sigint_handler(int)
     	return(EXIT_FAILURE);
 	}
 	return 0;
-}*/
+}
 
 int _getValue(std::string parameter, int defaultValue, int min, int max)
 {
@@ -129,7 +129,7 @@ void mirrored_rotation(VideoOptions *options)
 		throw std::runtime_error("illegal rotation value");
 	transform = rotation * transform;
 	options->Set().transform = transform;
-}
+}*/
 
 static void default_signal_handler(int signal_number)
 {
