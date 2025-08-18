@@ -5,12 +5,14 @@
 #include <sys/stat.h>
 
 #include "core/rpicam_encoder.hpp"
+#include "output/output.hpp"
 #include "ndi_output.hpp"
-#include <libconfig.h++>
+#include "ndi_options.hpp"
+//#include <libconfig.h++>
 
 using namespace std::placeholders;
 bool exit_loop = false;
-libconfig::Config cfg;
+//libconfig::Config cfg;
 static int signal_received;
 
 static void sigint_handler(int)
@@ -18,7 +20,7 @@ static void sigint_handler(int)
 	exit_loop = true;
 }
 
-int loadConfig()
+/*int loadConfig()
 {
 	try
 	{
@@ -37,7 +39,7 @@ int loadConfig()
     	return(EXIT_FAILURE);
 	}
 	return 0;
-}
+}*/
 
 int _getValue(std::string parameter, int defaultValue, int min, int max)
 {
@@ -266,8 +268,16 @@ int main(int argc, char *argv[])
 	try
 	{
 		RPiCamEncoder app;
-		VideoOptions *options = app.GetOptions();
-		loadConfig();
+		NDIOptions *options = app.GetOptions();
+		if (options->Parse(argc, argv))
+		{
+			if (options->Get().verbose >= 2)
+				options->Get().Print();
+
+			event_loop(app);
+		}
+
+/*		loadConfig();
 		options->Set().codec = "YUV420";
 		options->Set().verbose = false;
 		options->Set().nopreview = true;
@@ -288,7 +298,7 @@ int main(int argc, char *argv[])
 		mirrored_rotation(options);
 	//	options->Print();
 		event_loop(app);
-	}
+*/	}
 	catch (std::exception const &e)
 	{
 		std::cerr << "ERROR: *** " << e.what() << " ***" << std::endl;
